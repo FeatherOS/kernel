@@ -58,7 +58,7 @@ void println(const char* string) {
     print("\n");
 }
 
-extern "C" void main(/*unsigned int ebx*/) {
+extern "C" void main() {
     //TODO clear Screen
     println("Welcome to FeatherOS.\n");
     //Wenn alles geht
