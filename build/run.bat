@@ -1,1 +1,0 @@
-qemu-system-x86_64 -cdrom FeatherOS-x86_64.iso
