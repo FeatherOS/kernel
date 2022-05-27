@@ -9,3 +9,4 @@ unsigned char inb(unsigned short port) {
     asm volatile("inb %1, %0" : "=a"(data) : "Nd"(port));
     return data;
 }
+//Test Push because windows...
