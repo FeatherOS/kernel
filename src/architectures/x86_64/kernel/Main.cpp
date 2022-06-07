@@ -20,9 +20,12 @@ void setCursorPosition(int x, int y) {
 }
 
 void scrollPageUp(){
-    for(int i = 160*2; i < 4000 - 160; i++) {
+    /*for(int i = 160*2; i < 4000 - 160; i++) {
         //*(VGA_MEMORY + i - 160) = *(VGA_MEMORY + i);
         *(VGA_MEMORY + i - 160) = *(VGA_MEMORY + i);
+    }*/
+    for(int i = 0; i < 4000 - 160; i++) {
+        *(VGA_MEMORY + i) = *(VGA_MEMORY + i + 160);
     }
     //for(int i = 160*2; i < 4000 - 160; i++) *(VGA_MEMORY + i - 160) = *(VGA_MEMORY + i);
 }
@@ -58,6 +61,7 @@ void println(const char* string) {
     print("\n");
 }
 
+
 extern "C" void main() {
     //TODO clear Screen
     println("Welcome to FeatherOS.\n");
@@ -84,6 +88,10 @@ extern "C" void main() {
     println("Ich verfasse diesen Text (15)");
     println("Ich verfasse diesen Text (16)");
     println("Ich verfasse diesen Text (17)");
+    println("Ich verfasse diesen Text (18)");
+    println("Ich verfasse diesen Text (19)");
+    println("Ich verfasse diesen Text (20)");
+    //println("Ich verfasse diesen Text (21)");
     /*multiboot_info_t *mbinfo = (multiboot_info_t *) ebx;
     unsigned int address_of_module = mbinfo->mods_addr;
     unsigned int mod_count = mbinfo->mods_count;
