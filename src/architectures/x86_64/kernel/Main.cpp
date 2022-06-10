@@ -20,15 +20,10 @@ void setCursorPosition(int x, int y) {
     return;
 }
 
-void scrollPageUp(){
-    /*for(int i = 160*2; i < 4000 - 160; i++) {
-        //*(VGA_MEMORY + i - 160) = *(VGA_MEMORY + i);
-        *(VGA_MEMORY + i - 160) = *(VGA_MEMORY + i);
-    }*/
+void scrollPageUp() {
     for(int i = 0; i < 4000 - 160; i++) {
         *(VGA_MEMORY + i) = *(VGA_MEMORY + i + 160);
     }
-    //for(int i = 160*2; i < 4000 - 160; i++) *(VGA_MEMORY + i - 160) = *(VGA_MEMORY + i);
 }
 
 void print(const char* string) {
@@ -71,27 +66,27 @@ extern "C" void main(unsigned int ebx) {
     println("Kernel Version: CUSTOM");
     println("---= Kernel Informations END =---");
     println("\n[WARNING] You are using a custom FeatherOS kernel.");
-    println("Ich verfasse diesen Text (1)");
-    println("Ich verfasse diesen Text (2)");
-    println("Ich verfasse diesen Text (3)");
-    println("Ich verfasse diesen Text (4)");
-    println("Ich verfasse diesen Text (5)");
-    println("Ich verfasse diesen Text (6)");
-    println("Ich verfasse diesen Text (7)");
-    println("Ich verfasse diesen Text (8)");
-    println("Ich verfasse diesen Text (9)");
-    println("Ich verfasse diesen Text (10)");
-    println("Ich verfasse diesen Text (11)");
-    println("Ich verfasse diesen Text (12)");
-    println("Ich verfasse diesen Text (13)");
-    println("Ich verfasse diesen Text (14)");
-    println("Ich verfasse diesen Text (15)");
-    println("Ich verfasse diesen Text (16)");
-    println("Ich verfasse diesen Text (17)");
-    println("Ich verfasse diesen Text (18)");
-    println("Ich verfasse diesen Text (19)");
-    println("Ich verfasse diesen Text (20)");
-    //println("Ich verfasse diesen Text (21)");
+    println("This is a test Message (1)");
+    println("This is a test Message (2)");
+    println("This is a test Message (3)");
+    println("This is a test Message (4)");
+    println("This is a test Message (5)");
+    println("This is a test Message (6)");
+    println("This is a test Message (7)");
+    println("This is a test Message (8)");
+    println("This is a test Message (9)");
+    println("This is a test Message (10)");
+    println("This is a test Message (11)");
+    println("This is a test Message (12)");
+    println("This is a test Message (13)");
+    println("This is a test Message (14)");
+    println("This is a test Message (15)");
+    println("This is a test Message (16)");
+    println("This is a test Message (17)");
+    println("This is a test Message (18)");
+    println("This is a test Message (19)");
+    println("This is a test Message (20)");
+    println("This is a test Message (21)");
 
     /*multiboot_info_t *mbinfo = (multiboot_info_t *) ebx;
     unsigned int address_of_module = mbinfo->mods_addr;
