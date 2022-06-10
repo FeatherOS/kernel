@@ -4,7 +4,7 @@ ARCHITECTURE = x86_64
 FIRMWARE = bios
 
 G++ = g++
-G++_FLAGS = -ffreestanding -Wall -Wextra -pedantic -Wmissing-declarations# $(INC_DIRS) -MMD -MP
+G++_FLAGS = -ffreestanding -Wall -Wextra -pedantic -Wmissing-declarations -I src/includes/# $(INC_DIRS) -MMD -MP
 LD = ld
 LD_FLAGS = -n -T src/architectures/$(ARCHITECTURE)/linker.ld -nostdlib
 

@@ -1,4 +1,5 @@
-#include "../../../includes/IO.h"
+#include <IO.h>
+#include <multiboot.h>
 
 #define VGA_MEMORY (unsigned char*) 0xb8000
 #define VGA_WIDTH 80
@@ -62,7 +63,7 @@ void println(const char* string) {
 }
 
 
-extern "C" void main() {
+extern "C" void main(unsigned int ebx) {
     //TODO clear Screen
     println("Welcome to FeatherOS.\n");
     //Wenn alles geht
@@ -92,6 +93,7 @@ extern "C" void main() {
     println("Ich verfasse diesen Text (19)");
     println("Ich verfasse diesen Text (20)");
     //println("Ich verfasse diesen Text (21)");
+
     /*multiboot_info_t *mbinfo = (multiboot_info_t *) ebx;
     unsigned int address_of_module = mbinfo->mods_addr;
     unsigned int mod_count = mbinfo->mods_count;
@@ -100,9 +102,8 @@ extern "C" void main() {
     } else {
         println("nothing loaded");
     }
-
-    //typedef void (*call_module_t)(void);
-    //call_module_t start_program = (call_module_t) address_of_module;
-    //start_program();*/
+    typedef void (*call_module_t)(void);
+    call_module_t start_module = (call_module_t) address_of_module;
+    start_module();*/
     return;
 }
