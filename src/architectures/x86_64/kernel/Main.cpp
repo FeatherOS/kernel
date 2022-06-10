@@ -43,13 +43,12 @@ void print(const char* string) {
                     index -= index % VGA_WIDTH;
                 break;
                 default:
-                    if(index < 1840) {
-                        *(VGA_MEMORY + index * 2) = *charPtr;
-                        //*(VGA_MEMORY + index * 2 + 1) = backgroundColor | foregroundColor;
-                    } else {
+                    if(index >= 1840) {
                         scrollPageUp();
                         index = 1760;
                     }
+                    *(VGA_MEMORY + index * 2) = *charPtr;
+                    //*(VGA_MEMORY + index * 2 + 1) = backgroundColor | foregroundColor;
                     index++;
                 break;
             }
