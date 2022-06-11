@@ -9,7 +9,7 @@
 #define VT100_ARGUMENT_DELIMITER     ';'
 #define VT100_ARGUMENT_CSI           '['
 
-#define VT100_GET_PUTCHAR_PTR(vt100_instance) (void (*)(char))([](char c) { vt100_instance.putchar(c); })
+#define VT100_GET_PUTCHAR_PTR(vt100_instance) [](char c) { vt100_instance.putchar(c); }
 
 class VT100 {
     private:

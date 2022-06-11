@@ -59,11 +59,11 @@ void println(const char* string) {
 }
 
 extern "C" void main(unsigned int ebx) {
-    VGA::TextMode::initialize_vt();
-    Console::KernelTerminal *k_vt = &VGA::TextMode::virtual_terminal;
-    k_vt->puts("hello");
+    //VGA::TextMode::initialize_vt();
+    //Console::KernelTerminal *k_vt = &VGA::TextMode::virtual_terminal;
+    //k_vt->puts("hello");
     //TODO clear Screen
-    /*println("Welcome to FeatherOS.\n");
+    println("Welcome to FeatherOS.\n");
     //testing();
     //Wenn alles geht
     println("Checking kernel validity... OK");
@@ -91,7 +91,16 @@ extern "C" void main(unsigned int ebx) {
     println("This is a test Message (18)");
     println("This is a test Message (19)");
     println("This is a test Message (20)");
-    println("This is a test Message (21)");*/
+    println("This is a test Message (21)");
+
+    /* Init GDT */
+    
+    /* Init GDT END */
+
+
+
+
+
     /*outb(0x3F8 + 1, 0x00);
     outb(0x3F8 + 3, 0x80);
     outb(0x3F8 + 0, 0x03);
