@@ -1,6 +1,7 @@
 #include <IO.hpp>
 #include <multiboot.hpp>
 #include <testing.hpp>
+#include <vga/tm_vt100.hpp>
 
 #define VGA_MEMORY (unsigned char*) 0xb8000
 #define VGA_WIDTH 80
@@ -58,9 +59,12 @@ void println(const char* string) {
 }
 
 extern "C" void main(unsigned int ebx) {
+    VGA::TextMode::initialize_vt();
+    Console::KernelTerminal *k_vt = &VGA::TextMode::virtual_terminal;
+    k_vt->puts("hello");
     //TODO clear Screen
-    println("Welcome to FeatherOS.\n");
-    testing();
+    /*println("Welcome to FeatherOS.\n");
+    //testing();
     //Wenn alles geht
     println("Checking kernel validity... OK");
     println("\n---= Kernel Informations BEGIN =---");
@@ -87,7 +91,16 @@ extern "C" void main(unsigned int ebx) {
     println("This is a test Message (18)");
     println("This is a test Message (19)");
     println("This is a test Message (20)");
-    println("This is a test Message (21)");
+    println("This is a test Message (21)");*/
+    /*outb(0x3F8 + 1, 0x00);
+    outb(0x3F8 + 3, 0x80);
+    outb(0x3F8 + 0, 0x03);
+    outb(0x3F8 + 1, 0x00);
+    outb(0x3F8 + 3, 0x03);
+    outb(0x3F8 + 2, 0xC7);
+    outb(0x3F8 + 4, 0x0B);*/
+
+
     /*asm("mov 4(%ebx), %eax");
     asm("lgdt (%eax)");
     asm("mov $0x10, %ax");

@@ -4,7 +4,7 @@ ARCHITECTURE = x86_64
 FIRMWARE = bios
 
 CXX = g++
-CXXFLAGS = -ffreestanding -Wall -Wextra -pedantic -Wmissing-declarations -I src/includes/ -MMD -MP
+CXXFLAGS = -std=c++17 -ffreestanding -Wall -Wextra -pedantic -Wmissing-declarations -I src/includes/ -MMD -MP
 LD = ld
 LDFLAGS = -n -T src/architectures/$(ARCHITECTURE)/linker.ld -nostdlib
 

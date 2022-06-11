@@ -1,3 +1,3 @@
 #pragma once
 
-extern void testing();
+extern "C" void testing();

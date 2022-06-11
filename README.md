@@ -4,6 +4,8 @@ This is the Kernel from FeatherOS.<br><br>
 ![](https://img.shields.io/github/issues-pr/FeatherOS/kernel)
 ![](https://github.com/FeatherOS/kernel/actions/workflows/c-cpp.yml/badge.svg)
 
+# Credits
+The VGA Textmode Implementation is from Tigran
 <!--# Building
 ## Dependencies
 **Install the following Packages**

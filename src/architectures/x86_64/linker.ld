@@ -14,7 +14,7 @@ ENTRY(start)
 }*/
 SECTIONS
 {
-    . = 0x100000;
+    . = 1M;
     kernel_start = .;
     .boot : {
         KEEP(*(.multiboot_header))
