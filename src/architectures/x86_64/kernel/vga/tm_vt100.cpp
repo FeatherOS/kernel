@@ -103,8 +103,8 @@ namespace VGA::TextMode {
     Console::KernelTerminal virtual_terminal;
 
     void initialize_vt() {
-        uint8_t new_font[] = TEXT_MODE_FONT_8x16;
-        VGA::TextMode::Text::set_font(new_font);
+//         uint8_t new_font[] = TEXT_MODE_FONT_8x16;
+//         VGA::TextMode::Text::set_font(new_font);
         VGA::TextMode::Text::set_pixel9_visible(false);
 
         VGA::TextMode::Text::set_blinking(false);
