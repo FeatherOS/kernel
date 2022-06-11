@@ -1,5 +1,5 @@
-#include <IO.h>
-#include <multiboot.h>
+#include <IO.hpp>
+#include <multiboot.hpp>
 
 #define VGA_MEMORY (unsigned char*) 0xb8000
 #define VGA_WIDTH 80
