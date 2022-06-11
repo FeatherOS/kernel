@@ -1,5 +1,6 @@
 #include <IO.hpp>
 #include <multiboot.hpp>
+#include <testing.hpp>
 
 #define VGA_MEMORY (unsigned char*) 0xb8000
 #define VGA_WIDTH 80
@@ -56,10 +57,10 @@ void println(const char* string) {
     print("\n");
 }
 
-
 extern "C" void main(unsigned int ebx) {
     //TODO clear Screen
     println("Welcome to FeatherOS.\n");
+    testing();
     //Wenn alles geht
     println("Checking kernel validity... OK");
     println("\n---= Kernel Informations BEGIN =---");
@@ -87,7 +88,15 @@ extern "C" void main(unsigned int ebx) {
     println("This is a test Message (19)");
     println("This is a test Message (20)");
     println("This is a test Message (21)");
-
+    /*asm("mov 4(%ebx), %eax");
+    asm("lgdt (%eax)");
+    asm("mov $0x10, %ax");
+    asm("mov %ax, %ds");
+    asm("mov %ax, %es");
+    asm("mov %ax, %fs");
+    asm("mov %ax, %gs");
+    asm("mov %ax, %ss");
+    asm("mov %ax, %cs");*/
     /*multiboot_info_t *mbinfo = (multiboot_info_t *) ebx;
     unsigned int address_of_module = mbinfo->mods_addr;
     unsigned int mod_count = mbinfo->mods_count;
