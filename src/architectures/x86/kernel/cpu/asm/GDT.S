@@ -3,16 +3,11 @@ gdt_flush:
     mov eax, [esp+4]
     lgdt [eax]
     mov ax, 0x10
-    push 0x08
-    lea rax, [rel .reload_CS]
-    push rax
-    retfq
-.reload_CS:
-    mov ax, 0x10
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
     mov ss, ax
-    push 0x08
+    jmp 0x08:.flush
+.flush:
     ret

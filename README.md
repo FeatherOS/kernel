@@ -19,9 +19,9 @@ Run:
 make toolchain
 ```-->
 # Todo
-- [ ] x86_64
+- [ ] x86
     - [ ] System
-        - [ ] GDT (Global Descriptor Table)
+        - [x] GDT (Global Descriptor Table)
         - [ ] IDT (Interrupt Descriptor Table)
         - [ ] TSS (Task State Segment)
         - [ ] PCI (Peripheral Component Interconnect)

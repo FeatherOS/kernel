@@ -2,6 +2,7 @@
 #include <multiboot.hpp>
 #include <testing.hpp>
 #include <vga/tm_vt100.hpp>
+#include <cpu/gdt.hpp>
 
 #define VGA_MEMORY (unsigned char*) 0xb8000
 #define VGA_WIDTH 80
@@ -59,11 +60,12 @@ void println(const char* string) {
 }
 
 extern "C" void main(unsigned int ebx) {
-    //VGA::TextMode::initialize_vt();
-    //Console::KernelTerminal *k_vt = &VGA::TextMode::virtual_terminal;
-    //k_vt->puts("hello");
+    /*VGA::TextMode::initialize_vt();
+    Console::KernelTerminal *k_vt = &VGA::TextMode::virtual_terminal;
+    k_vt->puts("hello");*/
+    GDT::init_gdt();
     //TODO clear Screen
-    println("Welcome to FeatherOS.\n");
+    /*println("Welcome to FeatherOS.\n");
     //testing();
     //Wenn alles geht
     println("Checking kernel validity... OK");
@@ -91,7 +93,7 @@ extern "C" void main(unsigned int ebx) {
     println("This is a test Message (18)");
     println("This is a test Message (19)");
     println("This is a test Message (20)");
-    println("This is a test Message (21)");
+    println("This is a test Message (21)");*/
 
     /* Init GDT */
     

@@ -1,11 +1,11 @@
 #ARCHITECTURE: x86_64
-ARCHITECTURE = x86_64
+ARCHITECTURE = x86
 #FIRMWARE: bios, uefi
 FIRMWARE = bios
 
-CXX = g++
+CXX = i386-elf-g++
 CXXFLAGS = -std=c++17 -ffreestanding -Wall -Wextra -pedantic -Wmissing-declarations -I src/includes/ -MMD -MP
-LD = ld
+LD = i386-elf-ld
 LDFLAGS = -n -T src/architectures/$(ARCHITECTURE)/linker.ld -nostdlib
 
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
@@ -45,15 +45,14 @@ $(OUTPUT_FILE): --copy $(ALL_OUTPUT_FILES)
 
 %.o : %.asm
 	@echo "Assembling $<..."
-	nasm -f elf64 $< -o $@
+	nasm -f elf32 $< -o $@
 	@mkdir -p build/temp/$(subst src/architectures/,,$(*D))/
 	-cp -Rfp $@ build/temp/$(subst src/architectures/,,$(*D))/$(*F).o
 	@echo "$< assembled successfully."
 
 %.o : %.S
 	@echo "Assembling $<..."
-	nasm -f elf64 $< -o $@
-	#$(CXX) -c $< -o $@
+	nasm -f elf32 $< -o $@
 	@mkdir -p build/temp/$(subst src/architectures/,,$(*D))/
 	-cp -Rfp $@ build/temp/$(subst src/architectures/,,$(*D))/$(*F).o
 	@echo "$< assembled successfully."

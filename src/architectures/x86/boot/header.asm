@@ -1,0 +1,4 @@
+section .multiboot_header
+dd 0x1BADB002
+dd 0x3
+dd -(0x1BADB002 + 0x3)
