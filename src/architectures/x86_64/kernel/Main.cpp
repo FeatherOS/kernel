@@ -2,7 +2,7 @@
 #include <multiboot.hpp>
 #include <testing.hpp>
 #include <vga/tm_vt100.hpp>
-#include <cpu/gdt.hpp>
+#include <cpu/GDT.hpp>
 
 #define VGA_MEMORY (unsigned char*) 0xb8000
 #define VGA_WIDTH 80
