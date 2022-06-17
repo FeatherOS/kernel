@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-#include <cpu/gdt.hpp>
+#include <cpu/GDT.hpp>
 
 GDT::gdt_entry_t gdt_entries[5];
 GDT::gdt_pointer_t gdt_pointer;
