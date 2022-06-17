@@ -21,7 +21,7 @@ namespace GDT {
     void write_tss(uint32_t number, uint32_t ss0, uint32_t esp0);
     extern "C" void gdt_flush(uint32_t);
 
-    /*struct tss_entry_t {
+    struct tss_entry_t {
         uint32_t prev_tss;
         uint32_t esp0;
         uint32_t ss0;
@@ -49,5 +49,5 @@ namespace GDT {
         uint32_t ldt;
         uint16_t trap;
         uint16_t iomap_base;
-    }__attribute__((packed));*/
+    }__attribute__((packed));
 };

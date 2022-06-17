@@ -1,12 +1,10 @@
 #ARCHITECTURE: x86_64
-ARCHITECTURE = x86
+ARCHITECTURE = i386
 #FIRMWARE: bios, uefi
 FIRMWARE = bios
 
-#CXX = i386-elf-g++
 CXX = g++
 CXXFLAGS = -std=c++17 -ffreestanding -Wall -Wextra -pedantic -Wmissing-declarations -I src/includes/ -MMD -MP
-#LD = i386-elf-ld
 LD = ld
 LDFLAGS = -n -T src/architectures/$(ARCHITECTURE)/linker.ld -nostdlib
 
@@ -23,7 +21,7 @@ ALL_CPP_DEPENDENCY_FILES := $(ALL_CPP_OUTPUT_FILES:.o=.d)
 ALL_OUTPUT_FILES = src/architectures/$(ARCHITECTURE)/boot/header.o src/architectures/$(ARCHITECTURE)/boot/boot.o $(OTHER_ASSEMBLY_FILES:.S=.o) $(ALL_CPP_FILES:.cpp=.o)
 OUTPUT_FILE = build/Kernel-$(ARCHITECTURE).bin
 
-ifeq ($(ARCHITECTURE),x86)
+ifeq ($(ARCHITECTURE),i386)
 	CXXFLAGS += -m32
 	LDFLAGS += -melf_i386
 endif
@@ -65,9 +63,13 @@ $(OUTPUT_FILE): --copy $(ALL_OUTPUT_FILES)
 	@echo "$< assembled successfully."
 
 toolchain:
+ifeq ($(ARCHITECTURE), ...)
 	@echo "Building toolchain..."
 	@echo "coming soon..."
 	@echo "Toolchain build successfully."
+else
+	@echo "You don't need a Custom Toolchain!"
+endif
 
 build.iso: build.kernel
 	@echo "Building Iso..."

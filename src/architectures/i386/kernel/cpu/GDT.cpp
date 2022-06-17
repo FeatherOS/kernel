@@ -1,10 +1,10 @@
-#include <stdint.h>
-
 #include <cpu/GDT.hpp>
+
+#include <basic.hpp>
 
 GDT::gdt_entry_t gdt_entries[6];
 GDT::gdt_pointer_t gdt_pointer;
-//GDT::tss_entry_t tss;
+GDT::tss_entry_t tss;
 
 void GDT::init() {
     gdt_pointer.size = sizeof(gdt_entries) - 1;
@@ -14,9 +14,9 @@ void GDT::init() {
     set_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
     set_entry(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
     set_entry(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
-    //TODO: set tss entry
+    write_tss(5, 0x10, 0x00);
     gdt_flush((uint32_t) &gdt_pointer);
-    //TODO: flush tss
+    asm("mov $0x2B, %ax\nltr %ax");
 }
 
 void GDT::set_entry(uint64_t number, uint64_t base, uint64_t limit, uint8_t access, uint8_t granularity) {
@@ -29,7 +29,7 @@ void GDT::set_entry(uint64_t number, uint64_t base, uint64_t limit, uint8_t acce
     gdt_entries[number].access = access;
 }
 
-/*void GDT::write_tss(uint32_t number, uint32_t ss0, uint32_t esp0) {
+void GDT::write_tss(uint32_t number, uint32_t ss0, uint32_t esp0) {
     uintptr_t offset = (uintptr_t) &tss;
     uintptr_t size = offset + sizeof(tss);
     set_entry(number, offset, size, 0xE9, 0x00);
@@ -37,4 +37,4 @@ void GDT::set_entry(uint64_t number, uint64_t base, uint64_t limit, uint8_t acce
     tss.ss0 = ss0;
     tss.esp0 = esp0;
     tss.iomap_base = sizeof(tss);
-}*/
+}
