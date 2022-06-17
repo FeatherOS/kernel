@@ -1,6 +1,11 @@
 build.sh
 .vscode/
 build/*
+
+!build/iso/
+
+build/iso/boot/kernel.bin
+build/iso/modules/
 # Emacs temp files
 *~
 # temp output files

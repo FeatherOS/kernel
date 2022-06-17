@@ -39,8 +39,8 @@ void ISR::init() {
     IDT::set_gate(31, (uint32_t)isr31, 0x08, 0x8E);
     IDT::flush();
 }
-const char *itoa(int value, char *buffer, int radix, const char *digits = "0123456789abcdefghijklmnopqrstuvwxyz") {
-    if (value < 0) {
+/*const char *itoa(int value, char *buffer, int radix, const char *digits = "0123456789abcdefghijklmnopqrstuvwxyz") {
+    if(value < 0) {
         *buffer++ = '-';
         value = -value;
     }
@@ -54,12 +54,12 @@ const char *itoa(int value, char *buffer, int radix, const char *digits = "01234
         buffer[k] = c;
     }
     return (const char *)(buffer + i - 1);
-}
+}*/
 extern "C" void ISR::isr_handler(ISR::registers_t registers) {
     Console::KernelTerminal *k_vt = &VGA::TextMode::virtual_terminal;
     k_vt->puts("\n\x1B[31mInterrupt occurred!\x1B[0m (0x");
-    char buffer[4] = {0, 0, 0, 0};
+    /*char buffer[4] = {0, 0, 0, 0};
     itoa(registers.int_no, buffer, 10);
     k_vt->puts(buffer);
-    k_vt->puts(")\n");
+    k_vt->puts(")\n");*/
 }

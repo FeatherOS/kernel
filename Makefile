@@ -3,9 +3,11 @@ ARCHITECTURE = x86
 #FIRMWARE: bios, uefi
 FIRMWARE = bios
 
-CXX = i386-elf-g++
+#CXX = i386-elf-g++
+CXX = g++
 CXXFLAGS = -std=c++17 -ffreestanding -Wall -Wextra -pedantic -Wmissing-declarations -I src/includes/ -MMD -MP
-LD = i386-elf-ld
+#LD = i386-elf-ld
+LD = ld
 LDFLAGS = -n -T src/architectures/$(ARCHITECTURE)/linker.ld -nostdlib
 
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
@@ -20,6 +22,11 @@ ALL_CPP_DEPENDENCY_FILES := $(ALL_CPP_OUTPUT_FILES:.o=.d)
 
 ALL_OUTPUT_FILES = src/architectures/$(ARCHITECTURE)/boot/header.o src/architectures/$(ARCHITECTURE)/boot/boot.o $(OTHER_ASSEMBLY_FILES:.S=.o) $(ALL_CPP_FILES:.cpp=.o)
 OUTPUT_FILE = build/Kernel-$(ARCHITECTURE).bin
+
+ifeq ($(ARCHITECTURE),x86)
+	CXXFLAGS += -m32
+	LDFLAGS += -melf_i386
+endif
 
 build.kernel: $(OUTPUT_FILE)
 
