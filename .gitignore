@@ -4,6 +4,10 @@ build/*
 
 !build/iso/
 
+!build/OVMF_CODE-pure-efi.fd
+!build/OVMF_VARS-pure-efi.fd
+!build/startup.nsh
+
 build/iso/boot/kernel.bin
 build/iso/modules/
 # Emacs temp files

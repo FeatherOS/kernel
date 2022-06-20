@@ -22,7 +22,7 @@ OUTPUT_FILE = Kernel-$(ARCHITECTURE)-$(FIRMWARE).bin
 
 ifeq ($(ARCHITECTURE),i386)
 	CXXFLAGS += -m32
-	LDFLAGS += -melf_i386
+	LDFLAGS += -m elf_i386
 endif
 
 build.kernel: $(OUTPUT_FILE)
@@ -80,12 +80,19 @@ ifeq ($(FIRMWARE), uefi)
 	mcopy -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img ../Bootloader/uefi/x86_64/bootloader/main.efi ::EFI/BOOT
 	mcopy -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img build/startup.nsh ::
 	mcopy -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img build/Kernel-$(ARCHITECTURE)-$(FIRMWARE).bin ::
+	mv build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).iso
 	@echo "Iso build successfully."
+	@echo "qemu-system-$(ARCHITECTURE) -cdrom FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).iso -drive if=pflash,format=raw,unit=0,file=OVMF_CODE-pure-efi.fd,readonly=on -drive if=pflash,format=raw,unit=1,file=OVMF_VARS-pure-efi.fd" > build/run-$(ARCHITECTURE)-$(FIRMWARE).bat
+	@echo "qemu-system-$(ARCHITECTURE) -cdrom FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).iso -drive if=pflash,format=raw,unit=0,file=OVMF_CODE-pure-efi.fd,readonly=on -drive if=pflash,format=raw,unit=1,file=OVMF_VARS-pure-efi.fd" > build/run-$(ARCHITECTURE)-$(FIRMWARE).sh
+	@echo "created start files."
 else
 	@echo "Building Iso..."
 	@cp build/Kernel-$(ARCHITECTURE)-$(FIRMWARE).bin build/iso/boot/kernel.bin
 	@grub-mkrescue build/iso -o build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).iso
 	@echo "Iso build successfully."
+	@echo "qemu-system-$(ARCHITECTURE) -cdrom FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).iso" > build/run-$(ARCHITECTURE)-$(FIRMWARE).bat
+	@echo "qemu-system-$(ARCHITECTURE) -cdrom FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).iso" > build/run-$(ARCHITECTURE)-$(FIRMWARE).sh
+	@echo "created start files."
 endif
 
 clean:
