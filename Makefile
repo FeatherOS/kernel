@@ -1,4 +1,4 @@
-#ARCHITECTURE: x86_64
+#ARCHITECTURE: x86_64, i386
 ARCHITECTURE = i386
 #FIRMWARE: bios, uefi
 FIRMWARE = bios
@@ -6,20 +6,19 @@ FIRMWARE = bios
 CXX = g++
 CXXFLAGS = -std=c++17 -ffreestanding -Wall -Wextra -pedantic -Wmissing-declarations -I src/includes/ -MMD -MP
 LD = ld
-LDFLAGS = -n -T src/architectures/$(ARCHITECTURE)/linker.ld -nostdlib
+LDFLAGS = -n -T src/architectures/$(ARCHITECTURE)/$(FIRMWARE)/linker.ld -nostdlib
 
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
-ALL_ASSEMBLY_FILES = $(call rwildcard,src/architectures/$(ARCHITECTURE),*.asm)
-OTHER_ASSEMBLY_FILES = $(call rwildcard,src/architectures/$(ARCHITECTURE)/kernel,*.S)
+ALL_ASSEMBLY_FILES = $(call rwildcard,src/architectures/$(ARCHITECTURE)/$(FIRMWARE),*.asm)
+ALL_STUB_FILES = $(call rwildcard,src/architectures/$(ARCHITECTURE)/$(FIRMWARE),*.S)
 
-ALL_CPP_FILES = $(call rwildcard,src/architectures/$(ARCHITECTURE)/kernel,*.cpp)
+ALL_CPP_FILES = $(call rwildcard,src/architectures/$(ARCHITECTURE)/$(FIRMWARE),*.cpp)
 ALL_CPP_OUTPUT_FILES = $(ALL_CPP_FILES:.cpp=.o)
-OTHER_CPP_OUTPUT_FILES = $(filter-out src/architectures/$(ARCHITECTURE)/kernel/Main.o,$(ALL_CPP_OUTPUT_FILES))
 ALL_CPP_DEPENDENCY_FILES := $(ALL_CPP_OUTPUT_FILES:.o=.d)
 
-ALL_OUTPUT_FILES = src/architectures/$(ARCHITECTURE)/boot/header.o src/architectures/$(ARCHITECTURE)/boot/boot.o $(OTHER_ASSEMBLY_FILES:.S=.o) $(ALL_CPP_FILES:.cpp=.o)
-OUTPUT_FILE = build/Kernel-$(ARCHITECTURE).bin
+ALL_OUTPUT_FILES = $(ALL_ASSEMBLY_FILES:.asm=.o) $(ALL_STUB_FILES:.S=.o) $(ALL_CPP_FILES:.cpp=.o)
+OUTPUT_FILE = Kernel-$(ARCHITECTURE)-$(FIRMWARE).bin
 
 ifeq ($(ARCHITECTURE),i386)
 	CXXFLAGS += -m32
@@ -30,15 +29,15 @@ build.kernel: $(OUTPUT_FILE)
 
 $(OUTPUT_FILE): --copy $(ALL_OUTPUT_FILES)
 	@echo "Building Kernel..."
-	$(LD) $(LDFLAGS) src/architectures/$(ARCHITECTURE)/boot/header.o src/architectures/$(ARCHITECTURE)/boot/boot.o src/architectures/$(ARCHITECTURE)/kernel/Main.o $(OTHER_CPP_OUTPUT_FILES) $(OTHER_ASSEMBLY_FILES:.S=.o) -o build/Kernel-$(ARCHITECTURE).bin
-	@find src/architectures/$(ARCHITECTURE) -iname '*.o' -delete
-	@find src/architectures/$(ARCHITECTURE) -iname '*.d' -delete
+	$(LD) $(LDFLAGS) $(ALL_CPP_FILES:.cpp=.o) $(ALL_ASSEMBLY_FILES:.asm=.o) $(ALL_STUB_FILES:.S=.o) -o build/Kernel-$(ARCHITECTURE)-$(FIRMWARE).bin
+	@find src/architectures/$(ARCHITECTURE)/$(FIRMWARE) -iname '*.o' -delete
+	@find src/architectures/$(ARCHITECTURE)/$(FIRMWARE) -iname '*.d' -delete
 	@echo "Kernel build successfully."
 
 --copy:
-	@find src/architectures/$(ARCHITECTURE) -iname '*.o' -delete
-	@find src/architectures/$(ARCHITECTURE) -iname '*.d' -delete
-	-cp -Rrfp build/temp/$(ARCHITECTURE)/* src/architectures/$(ARCHITECTURE)/
+	@find src/architectures/$(ARCHITECTURE)/$(FIRMWARE) -iname '*.o' -delete
+	@find src/architectures/$(ARCHITECTURE)/$(FIRMWARE) -iname '*.d' -delete
+	-cp -Rrfp build/temp/$(ARCHITECTURE)/$(FIRMWARE)/* src/architectures/$(ARCHITECTURE)/$(FIRMWARE)/
 
 %.o: %.cpp
 	@echo "Compiling $<..."
@@ -72,10 +71,22 @@ else
 endif
 
 build.iso: build.kernel
+ifeq ($(FIRMWARE), uefi)
 	@echo "Building Iso..."
-	@cp build/Kernel-$(ARCHITECTURE).bin build/iso/boot/kernel.bin
-	@grub-mkrescue build/iso -o build/FeatherOS-$(ARCHITECTURE).iso
+	dd if=/dev/zero of=build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img bs=512 count=93750
+	mformat -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img -f 1440 ::
+	mmd -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img ::/EFI
+	mmd -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img ::/EFI/BOOT
+	mcopy -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img ../Bootloader/uefi/x86_64/bootloader/main.efi ::EFI/BOOT
+	mcopy -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img build/startup.nsh ::
+	mcopy -i build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).img build/Kernel-$(ARCHITECTURE)-$(FIRMWARE).bin ::
 	@echo "Iso build successfully."
+else
+	@echo "Building Iso..."
+	@cp build/Kernel-$(ARCHITECTURE)-$(FIRMWARE).bin build/iso/boot/kernel.bin
+	@grub-mkrescue build/iso -o build/FeatherOS-$(ARCHITECTURE)-$(FIRMWARE).iso
+	@echo "Iso build successfully."
+endif
 
 clean:
 	@rm -rf build/temp/
